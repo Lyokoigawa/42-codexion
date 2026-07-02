@@ -43,6 +43,7 @@ TO-DO:
 - mutex stuff
 - more thread manipulation
 - controller for the simulation
+- fix coder creation
 
 
 2/7/2026: fixed parsing, started messing around with thread creation
