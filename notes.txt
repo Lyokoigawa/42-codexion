@@ -37,3 +37,14 @@ coders use dongles on their left and right sides, not "any" dongles like in a pi
 coders will ONLY grab 2 dongles at a time
 
 
+
+TO-DO:
+
+- mutex stuff
+- more thread manipulation
+- controller for the simulation
+
+
+2/7/2026: fixed parsing, started messing around with thread creation
+
+
