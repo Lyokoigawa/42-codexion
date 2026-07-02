@@ -6,7 +6,7 @@
 /*   By: lyokoiga <lyokoiga@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 14:22:00 by lyokoiga          #+#    #+#             */
-/*   Updated: 2026/07/02 10:57:23 by lyokoiga         ###   ########.fr       */
+/*   Updated: 2026/07/02 14:17:38 by lyokoiga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,11 @@ typedef	struct input
 typedef struct coder
 {
 	int			index; //coder index, helps organize them into a circle
-	long		last_compile_timestamp; //helps with output AND with time to burnout
+	long		last_compile_timestamp; //helps time burnout
 	int			total_compiles; //individual coder compile number
 	t_input		*limits; //passes data from input struct
 }				t_coder;
 
 t_input		*input_parse(char **in);
 void		*start_thread(void *arg);
+t_coder		**coder_creation(t_input *input);
