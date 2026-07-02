@@ -1,0 +1,39 @@
+mandatory arguments:
+
+number_of_coders - number of coders + dongles
+
+time_to_burnout (ms) - time until a coder goes into burnout.
+time is reset per compile
+
+time_to_compile - time it takes to compile. a coder must hold 2 dongles
+
+time_to_debug - time spent debugging
+
+time_to_refactor - time it takes to refactor. once finished,
+a coder will begin searching for dongles to start compiling
+
+number_of_compiles_required - simulation stops once this number is reached,
+or a coder burns out
+
+dongle_cooldown - after being released a dongle is
+unavailable after it's been used
+
+scheduler - the arbitation policy used by the dongles to decide who gets them.
+either FIFO or EDF.
+FIFO - first in, first out: dongle is granted to the coder who arrived first in the queue
+EDF - earliest deadline first: deadline = last_compile_start + time_to_burnout
+
+coder number 1 sits next to coder number_of_coders. any others sit next to N + 1 and N - 1
+
+phases: compile -> debug -> refactor -> compile
+
+
+
+
+if there's only 1 coder, only 1 dongle will be needed to compile
+
+coders use dongles on their left and right sides, not "any" dongles like in a pile
+
+coders will ONLY grab 2 dongles at a time
+
+
