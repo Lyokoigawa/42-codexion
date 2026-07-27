@@ -38,14 +38,26 @@ coders will ONLY grab 2 dongles at a time
 
 
 
+monitor controls most of the mutex stuff
+
+have the coders sleep if they can't use dongles
+
+when a coder finishes using the dongles, broadcast to wake everyone up
+
+monitor will call mutexes to read if threads are finished with their bs
+
+
+
+
 TO-DO:
 
 - mutex stuff
 - more thread manipulation
 - controller for the simulation
-- fix coder creation
 
 
 2/7/2026: fixed parsing, started messing around with thread creation
+
+27/7/2026: had to fix a buncha shit because of this dogass disk space limitation fuck this bs
 
 

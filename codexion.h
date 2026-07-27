@@ -6,7 +6,7 @@
 /*   By: lyokoiga <lyokoiga@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 14:22:00 by lyokoiga          #+#    #+#             */
-/*   Updated: 2026/07/02 14:17:38 by lyokoiga         ###   ########.fr       */
+/*   Updated: 2026/07/27 15:40:54 by lyokoiga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <string.h>
+#include <unistd.h>
 
 typedef	struct input
 {
@@ -29,12 +30,27 @@ typedef	struct input
 
 typedef struct coder
 {
-	int			index; //coder index, helps organize them into a circle
-	long		last_compile_timestamp; //helps time burnout
-	int			total_compiles; //individual coder compile number
-	t_input		*limits; //passes data from input struct
-}				t_coder;
+	int				index; //coder index, helps organize them into a circle
+	long			last_compile_timestamp; //helps time burnout
+	int				total_compiles; //individual coder compile number
+	t_input			*limits; //passes data from input struct
+	pthread_mutex_t	mutex;
+}					t_coder;
+
+typedef struct sys
+{
+	pthread_mutex_t	mutex;
+	int couter;
+} sys;
+
+
+typedef struct dongle
+{
+	int		index;
+	int		is_available;
+	int		cooldown_timestamp;
+}			t_dongle;
 
 t_input		*input_parse(char **in);
 void		*start_thread(void *arg);
-t_coder		**coder_creation(t_input *input);
+t_coder		*coder_creation(t_input *input);
