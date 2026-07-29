@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lyokoiga <lyokoiga@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: lyokoiga <lyokoiga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 13:42:28 by lyokoiga          #+#    #+#             */
-/*   Updated: 2026/07/02 14:20:39 by lyokoiga         ###   ########.fr       */
+/*   Updated: 2026/07/29 14:31:23 by lyokoiga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,11 @@ int	main(int ac, char **av)
 	t_input		*output;
 	int			i;
 	pthread_t	*threads;
-	t_coder		**coders;
+	t_coder		*coders;
+	t_monitor 	test;
 
+	pthread_mutex_init(&test.mutex, NULL);
+	test.couter = 0;
 	i = 0;
 	output = NULL;
 	if (ac == 9)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lyokoiga <lyokoiga@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: lyokoiga <lyokoiga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 14:22:00 by lyokoiga          #+#    #+#             */
-/*   Updated: 2026/07/27 15:40:54 by lyokoiga         ###   ########.fr       */
+/*   Updated: 2026/07/29 14:51:00 by lyokoiga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,31 @@ typedef	struct input
 	int	scheduler; //fifo or edf?
 }		t_input;
 
+typedef struct dongle
+{
+	int				index; //dongle's index equivalent to the coder index
+	int				is_available; //checks if the dongle can be picked up
+	int				is_ready; //checks if the dongle is ready for pickup
+	int				cooldown_timestamp;
+	pthread_mutex_t	mutex; //dongle lock
+}					t_dongle;
+
 typedef struct coder
 {
 	int				index; //coder index, helps organize them into a circle
 	long			last_compile_timestamp; //helps time burnout
 	int				total_compiles; //individual coder compile number
 	t_input			*limits; //passes data from input struct
-	pthread_mutex_t	mutex;
+	t_dongle		*l_dong; //left dongle
+	t_dongle		*r_dong; //right dongle
+	pthread_mutex_t	mutex; //mutex for monitor perhaps
 }					t_coder;
 
-typedef struct sys
+typedef struct monitor
 {
 	pthread_mutex_t	mutex;
 	int couter;
-} sys;
-
-
-typedef struct dongle
-{
-	int		index;
-	int		is_available;
-	int		cooldown_timestamp;
-}			t_dongle;
+} 	t_monitor;
 
 t_input		*input_parse(char **in);
 void		*start_thread(void *arg);

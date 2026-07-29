@@ -58,6 +58,15 @@ TO-DO:
 
 2/7/2026: fixed parsing, started messing around with thread creation
 
-27/7/2026: had to fix a buncha shit because of this dogass disk space limitation fuck this bs
+27/7/2026: had to fix a buncha shit because [REDACTED] i was not happy. Disk space too low.
 
+29/7/2026: gonna try to work on something... dunno where to go from here now.
 
+	each coder has their own dongle on their left and the next coder's dongle on their right.
+	where can i go from here now?
+	adding the phases?
+	yeah i think i'll try that...
+
+	coders should check if both dongles are active before picking them up... i can do that with a
+	(coder->index + 1) % config->coders
+	if (dongle[coder->index]->is_active && dongle[coder->index + 1]->is_active)
