@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lyokoiga <lyokoiga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lyokoiga <lyokoiga@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/19 13:42:28 by lyokoiga          #+#    #+#             */
-/*   Updated: 2026/07/29 14:31:23 by lyokoiga         ###   ########.fr       */
+/*   Updated: 2026/08/04 13:52:33 by lyokoiga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,8 @@ int	main(int ac, char **av)
 {
 	t_input		*output;
 	int			i;
-	pthread_t	*threads;
 	t_coder		*coders;
-	t_monitor 	test;
 
-	pthread_mutex_init(&test.mutex, NULL);
-	test.couter = 0;
 	i = 0;
 	output = NULL;
 	if (ac == 9)
@@ -29,30 +25,22 @@ int	main(int ac, char **av)
 		output = input_parse(av);
 		if (!output)
 			return (0);
-		threads = malloc(sizeof(pthread_t) * output->coders);
-		if (!threads)
-		{
-			free(output);
-			return (0);
-		}
 		coders = coder_creation(output);
 		if (!coders)
 		{
 			free(output);
-			free(threads);
 			return (0);
 		}
 		while (i < output->coders)
 		{
 			printf("slot [%d]: created\n", i);
-			pthread_create(&threads[i], NULL, start_thread, &coders[i]);
+			pthread_create(&coders[i].thread, NULL, start_thread, &coders[i]);
 			i++;
 		}
 		i = 0;
 		while (i < output->coders)
-			pthread_join(threads[i++], NULL);
+			pthread_join(coders[i++].thread, NULL);
 		free(output);
-		free(threads);
 	}
 	else
 		printf("Not enough inputs\nRecieved: %d\nExpected: 9", ac);

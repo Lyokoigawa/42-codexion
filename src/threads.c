@@ -3,15 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lyokoiga <lyokoiga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lyokoiga <lyokoiga@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 13:44:58 by lyokoiga          #+#    #+#             */
-/*   Updated: 2026/07/29 15:22:33 by lyokoiga         ###   ########.fr       */
+/*   Updated: 2026/08/04 14:41:35 by lyokoiga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../codexion.h"
-#include <time.h>
+
+t_monitor	monitor_creation(t_input *input, t_coder *coders)
+{
+	t_monitor	monitor;
+
+	monitor.coders = coders;
+	monitor.input = input;
+	monitor.total_compiles = 0;
+	pthread_mutex_init(&monitor.print_mutex, NULL);
+	return (monitor);
+}
 
 t_dongle	*dongle_creation(t_input *input)
 {
@@ -28,6 +38,7 @@ t_dongle	*dongle_creation(t_input *input)
 		dongles[i].is_available = 1;
 		dongles[i].is_ready = 1;
 		dongles[i].cooldown_timestamp = 0;
+		pthread_mutex_init(&dongles[i].mutex, NULL);
 		i++;
 	}
 	return (dongles);
@@ -56,6 +67,7 @@ t_coder	*coder_creation(t_input *input)
 		else
 			coders[i].r_dong = &dongles[i + 1];
 		pthread_mutex_init(&coders[i].mutex, NULL);
+		pthread_create(&coders[i].thread, NULL, start_thread, &coders[i]);
 		i++;
 	}
 	return (coders);
@@ -63,15 +75,18 @@ t_coder	*coder_creation(t_input *input)
 
 void	*start_thread(void *arg)
 {
-	t_coder	*data;
-	//int	n;
+	t_coder			*data;
 
 	data = arg;
-	//n = 0;
-	pthread_t		thisThread = pthread_self();
-	printf("Created a new thread: [%lu]\n", (unsigned long)thisThread);
 	printf("Coder index: %d\n", data->index);
 	printf("Dongles nearby: %d, %d\n", data->l_dong->index, data->r_dong->index);
+	while (data->total_compiles < data->limits->target)
+	{
+		codex_comp(*data);
+		codex_debug(*data);
+		codex_refac(*data);
+		printf("Current number of compiles %d - Coder [%d]\n", data->total_compiles, data->index);
+	}
 	pthread_exit(NULL);
 	return (arg);
 }

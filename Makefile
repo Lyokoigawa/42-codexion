@@ -6,13 +6,14 @@
 #    By: lyokoiga <lyokoiga@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/06/02 14:20:45 by lyokoiga          #+#    #+#              #
-#    Updated: 2026/06/12 15:24:29 by lyokoiga         ###   ########.fr        #
+#    Updated: 2026/07/31 13:43:38 by lyokoiga         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = codexion
 
-SRC = src/codexion.c src/codexion_parsing.c src/threads.c
+SRC = src/codexion.c src/codexion_parsing.c src/threads.c \
+	src/coder_actions.c
 
 OBJ_P = $(SRC:%.c=%.o)
 

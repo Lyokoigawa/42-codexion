@@ -70,3 +70,13 @@ TO-DO:
 	coders should check if both dongles are active before picking them up... i can do that with a
 	(coder->index + 1) % config->coders
 	if (dongle[coder->index]->is_active && dongle[coder->index + 1]->is_active)
+
+31/7/2026: building monitor thread and testing compiling without monitor looking
+
+	monitor needs these mutexes:
+	- to see the status of a coder
+	- 
+
+4/8/2026: doing all the bullshit i can to make sure this shit wors... i'm so confused dude...
+
+tempo_atual - last_use >= cooldown
