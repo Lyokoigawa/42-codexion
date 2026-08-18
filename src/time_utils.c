@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/08/04 12:03:02 by lyokoiga          #+#    #+#             */
-/*   Updated: 2026/08/13 23:43:23 by marvin           ###   ########.fr       */
+/*   Created: 2026/08/04 12:03:02 by username          #+#    #+#             */
+/*   Updated: 2026/08/18 14:01:56 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,18 +46,18 @@ void	ft_sleep_ms(long ms)
 
 long	elapsed_time(long start)
 {
-	return ((long)get_current_time() - start);
+	return ((long) get_current_time() - start);
 }
 
-void		get_deadline(struct timespec *ts, long wait_ms)
+void	get_deadline(struct timespec *ts, long wait_ms)
 {
-    struct timeval  now;
-    long            total_nsec;
+	struct timeval	now;
+	long			total_nsec;
 
-    gettimeofday(&now, NULL);
-    ts->tv_sec = now.tv_sec;
-    ts->tv_nsec = now.tv_usec * 1000;      // microseconds -> nanoseconds
-    total_nsec = ts->tv_nsec + (wait_ms * 1000000L);  // add your wait, in nanoseconds
-    ts->tv_sec += total_nsec / 1000000000L;   // carry any overflow into seconds
-    ts->tv_nsec = total_nsec % 1000000000L;   // remainder stays as nanoseconds
+	gettimeofday(&now, NULL);
+	ts->tv_sec = now.tv_sec;
+	ts->tv_nsec = now.tv_usec * 1000;
+	total_nsec = ts->tv_nsec + (wait_ms * 1000000L);
+	ts->tv_sec += total_nsec / 1000000000L;
+	ts->tv_nsec = total_nsec % 1000000000L;
 }

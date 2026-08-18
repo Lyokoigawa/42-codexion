@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/29 14:09:25 by lyokoiga          #+#    #+#             */
-/*   Updated: 2026/08/15 18:57:57 by marvin           ###   ########.fr       */
+/*   Created: 2026/07/29 14:09:25 by username          #+#    #+#             */
+/*   Updated: 2026/08/18 13:37:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	print_status(t_coder *coder, const char *action)
 {
 	pthread_mutex_lock(&coder->sim->print_mutex);
 	if (simulation_running(coder->sim))
-		printf("%ld Coder [%d] %s\n", elapsed_time(coder->sim->start_time), coder->index, action);
+		printf("%ld Coder [%d] %s\n", elapsed_time(coder->sim->start_time),
+			coder->index, action);
 	pthread_mutex_unlock(&coder->sim->print_mutex);
 }
 
@@ -76,5 +77,5 @@ int	codex_refac(t_coder *coder)
 	pthread_mutex_lock(&coder->mutex);
 	coder->total_compiles += 1;
 	pthread_mutex_unlock(&coder->mutex);
-	return (1);	
+	return (1);
 }

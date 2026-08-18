@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/09 10:14:59 by lyokoiga          #+#    #+#             */
-/*   Updated: 2026/08/16 14:44:57 by marvin           ###   ########.fr       */
+/*   Created: 2026/06/09 10:14:59 by username          #+#    #+#             */
+/*   Updated: 2026/08/18 14:04:06 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,18 @@ int	is_possible(char **in)
 
 int	check_inputs(char **in)
 {
-	int i;
+	int	i;
 
 	i = 1;
 	while (i < 8)
-		if (atoi(in[i++]) <= 0)
+	{
+		if (atoi(in[i]) <= 0)
 		{
-			input_error(--i);
+			input_error(i);
 			return (0);
 		}
+		i++;
+	}
 	return (1);
 }
 
@@ -71,7 +74,7 @@ int	validate_input(char **in)
 	i[1] = 1;
 	while (in[i[1]])
 	{
-		while(in[i[1]][i[0]] && i[1] < 8)
+		while (in[i[1]][i[0]] && i[1] < 8)
 		{
 			if (!(in[i[1]][i[0]] >= '0' && in[i[1]][i[0]] <= '9'))
 			{

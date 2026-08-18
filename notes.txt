@@ -89,3 +89,9 @@ TO-DO:
 - error handling
 - erase bonus prints
 - 
+
+
+FIX DATA RACING ISSUES:
+- lock mutex at burnout
+
+I THINK IT'S DONE

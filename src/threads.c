@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/12 13:44:58 by lyokoiga          #+#    #+#             */
-/*   Updated: 2026/08/15 18:39:36 by marvin           ###   ########.fr       */
+/*   Created: 2026/06/12 13:44:58 by username          #+#    #+#             */
+/*   Updated: 2026/08/18 14:05:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_dongle	*dongle_creation(t_input *input)
 		dongles[i].index = i + 1;
 		dongles[i].is_ready = 1;
 		dongles[i].in_use = 0;
-		dongles[i].cooldown_start = -input->cooldown	;
+		dongles[i].cooldown_start = -input->cooldown;
 		pthread_mutex_init(&dongles[i].mutex, NULL);
 		dongles[i].heap = NULL;
 		i++;
@@ -62,7 +62,7 @@ t_dongle	*dongle_creation(t_input *input)
 t_coder	*coder_creation(t_simulation *sim)
 {
 	t_coder	*coders;
-	int		i; 
+	int		i;
 
 	i = 0;
 	coders = malloc(sizeof(t_coder) * sim->input->coders);
@@ -103,7 +103,7 @@ void	*sim_start(void *arg)
 
 void	*start_thread(void *arg)
 {
-	t_coder			*data;
+	t_coder	*data;
 
 	data = arg;
 	pthread_mutex_lock(&data->sim->start_mutex);
@@ -112,8 +112,8 @@ void	*start_thread(void *arg)
 	pthread_mutex_unlock(&data->sim->start_mutex);
 	while (simulation_running(data->sim))
 	{
-		pthread_mutex_lock(&data->mutex);
 		coder_request(data);
+		pthread_mutex_lock(&data->mutex);
 		if (!data->can_compile && data->sim->running)
 			pthread_cond_wait(&data->cond, &data->mutex);
 		data->can_compile = 0;
