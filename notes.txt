@@ -80,3 +80,12 @@ TO-DO:
 4/8/2026: doing all the bullshit i can to make sure this shit wors... i'm so confused dude...
 
 tempo_atual - last_use >= cooldown
+
+7/8/2026: finally started implementing monitor control and created some more structs... now trying to implement the burnout checking.
+
+12/8/2026:
+
+TO-DO:
+- error handling
+- erase bonus prints
+- 

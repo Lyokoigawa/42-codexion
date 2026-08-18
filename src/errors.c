@@ -1,0 +1,49 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   errors.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/08/15 19:38:34 by marvin            #+#    #+#             */
+/*   Updated: 2026/08/15 19:38:34 by marvin           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "codexion.h"
+
+void    individual_input_error(int error)
+{
+    if (error == 1)
+        printf("ERROR: time_to_compile exceeds burnout_time\n");
+    else if (error == 2)
+        printf("ERROR: time_to_debug exceeds burnout_time\n");
+    else if (error == 3)
+        printf("ERROR: time_to_refactor exceeds burnout_time\n");
+    else if (error == 4)
+        printf("ERROR: cooldown_time exceeds burnout_time\n");
+    printf("Simulation is impossible. Exiting program...\n");
+}
+
+void    feasibility_error(int error)
+{
+    if (error == 1)
+        printf("ERROR: time_to_compile + time_to_debug + time_to_refactor exceeds burnout_time.\n");
+    else if (error == 2)
+        printf("ERROR: time_to_compile + cooldown_time exceeds burnout_time.\n");
+    printf("Simulation is impossible. Exiting program...\n");
+}
+
+void    input_error(int i)
+{
+    char    *errors[7];
+
+    errors[0] = "max coders";
+    errors[1] = "burnout time";
+    errors[2] = "compile time";
+    errors[3] = "debug time";
+    errors[4] = "refactor time";
+    errors[5] = "total compiles";
+    errors[6] = "dongle cooldown";
+    printf("ERROR: %s must be a positive integer.\n", errors[i - 1]);
+}

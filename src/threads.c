@@ -3,24 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lyokoiga <lyokoiga@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 13:44:58 by lyokoiga          #+#    #+#             */
-/*   Updated: 2026/08/04 14:41:35 by lyokoiga         ###   ########.fr       */
+/*   Updated: 2026/08/15 18:39:36 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../codexion.h"
 
-t_monitor	monitor_creation(t_input *input, t_coder *coders)
+t_simulation	*simulation_creation(t_input *input)
 {
-	t_monitor	monitor;
+	t_simulation	*sim;
 
-	monitor.coders = coders;
-	monitor.input = input;
-	monitor.total_compiles = 0;
-	pthread_mutex_init(&monitor.print_mutex, NULL);
-	return (monitor);
+	sim = malloc(sizeof(t_simulation));
+	if (!sim)
+		return (NULL);
+	sim->input = input;
+	sim->dongles = dongle_creation(sim->input);
+	sim->coders = coder_creation(sim);
+	sim->running = 0;
+	sim->start = 0;
+	sim->start_time = get_current_time();
+	sim->scheduler.heap = malloc(sizeof(t_heap));
+	if (!sim->scheduler.heap)
+		return (NULL);
+	init_heap(sim->scheduler.heap, sim->input->coders);
+	init_scheduler(sim, sim->scheduler.heap);
+	pthread_mutex_init(&sim->start_mutex, NULL);
+	pthread_mutex_init(&sim->print_mutex, NULL);
+	pthread_mutex_init(&sim->state_mutex, NULL);
+	pthread_cond_init(&sim->start_cond, NULL);
+	return (sim);
 }
 
 t_dongle	*dongle_creation(t_input *input)
@@ -35,42 +49,56 @@ t_dongle	*dongle_creation(t_input *input)
 	while (i < input->coders)
 	{
 		dongles[i].index = i + 1;
-		dongles[i].is_available = 1;
 		dongles[i].is_ready = 1;
-		dongles[i].cooldown_timestamp = 0;
+		dongles[i].in_use = 0;
+		dongles[i].cooldown_start = -input->cooldown	;
 		pthread_mutex_init(&dongles[i].mutex, NULL);
+		dongles[i].heap = NULL;
 		i++;
 	}
 	return (dongles);
 }
 
-t_coder	*coder_creation(t_input *input)
+t_coder	*coder_creation(t_simulation *sim)
 {
-	t_coder		*coders;
-	t_dongle	*dongles;
-	int			i; 
+	t_coder	*coders;
+	int		i; 
 
 	i = 0;
-	dongles = dongle_creation(input);
-	coders = malloc(sizeof(t_coder) * input->coders);
-	if (!coders || !dongles)
+	coders = malloc(sizeof(t_coder) * sim->input->coders);
+	if (!coders || !sim->dongles)
 		return (NULL);
-	while (i < input->coders)
+	while (i < sim->input->coders)
 	{
 		coders[i].index = i + 1;
-		coders[i].limits = input;
+		coders[i].sim = sim;
 		coders[i].total_compiles = 0;
 		coders[i].last_compile_timestamp = 0;
-		coders[i].l_dong = &dongles[i];
-		if (i == input->coders - 1)
-			coders[i].r_dong = &dongles[0];
+		coders[i].can_compile = 0;
+		coders[i].l_dong = &sim->dongles[i];
+		if (i == sim->input->coders - 1)
+			coders[i].r_dong = &sim->dongles[0];
 		else
-			coders[i].r_dong = &dongles[i + 1];
+			coders[i].r_dong = &sim->dongles[i + 1];
 		pthread_mutex_init(&coders[i].mutex, NULL);
-		pthread_create(&coders[i].thread, NULL, start_thread, &coders[i]);
+		pthread_cond_init(&coders[i].cond, NULL);
 		i++;
 	}
 	return (coders);
+}
+
+void	*sim_start(void *arg)
+{
+	t_simulation	*sim;
+
+	sim = arg;
+	pthread_mutex_lock(&sim->start_mutex);
+	sim->start = 1;
+	sim->running = 1;
+	pthread_cond_broadcast(&sim->start_cond);
+	pthread_mutex_unlock(&sim->start_mutex);
+	sim_run(sim);
+	return (arg);
 }
 
 void	*start_thread(void *arg)
@@ -78,14 +106,21 @@ void	*start_thread(void *arg)
 	t_coder			*data;
 
 	data = arg;
-	printf("Coder index: %d\n", data->index);
-	printf("Dongles nearby: %d, %d\n", data->l_dong->index, data->r_dong->index);
-	while (data->total_compiles < data->limits->target)
+	pthread_mutex_lock(&data->sim->start_mutex);
+	while (!simulation_running(data->sim))
+		pthread_cond_wait(&data->sim->start_cond, &data->sim->start_mutex);
+	pthread_mutex_unlock(&data->sim->start_mutex);
+	while (simulation_running(data->sim))
 	{
-		codex_comp(*data);
-		codex_debug(*data);
-		codex_refac(*data);
-		printf("Current number of compiles %d - Coder [%d]\n", data->total_compiles, data->index);
+		pthread_mutex_lock(&data->mutex);
+		coder_request(data);
+		if (!data->can_compile && data->sim->running)
+			pthread_cond_wait(&data->cond, &data->mutex);
+		data->can_compile = 0;
+		pthread_mutex_unlock(&data->mutex);
+		codex_comp(data);
+		codex_debug(data);
+		codex_refac(data);
 	}
 	pthread_exit(NULL);
 	return (arg);

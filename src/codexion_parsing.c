@@ -3,14 +3,52 @@
 /*                                                        :::      ::::::::   */
 /*   codexion_parsing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lyokoiga <lyokoiga@student.42lisboa.com    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 10:14:59 by lyokoiga          #+#    #+#             */
-/*   Updated: 2026/07/13 15:34:29 by lyokoiga         ###   ########.fr       */
+/*   Updated: 2026/08/16 14:44:57 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../codexion.h"
+
+int	is_possible(char **in)
+{
+	int	nums[5];
+
+	nums[0] = atoi(in[2]);
+	nums[1] = atoi(in[3]);
+	nums[2] = atoi(in[4]);
+	nums[3] = atoi(in[5]);
+	nums[4] = atoi(in[7]);
+	if (!individual_input_check(nums))
+		return (0);
+	if ((nums[1] + nums[2] + nums[3]) >= nums[0])
+	{
+		feasibility_error(1);
+		return (0);
+	}
+	else if ((nums[1] + nums[4]) >= nums[0])
+	{
+		feasibility_error(2);
+		return (0);
+	}
+	return (1);
+}
+
+int	check_inputs(char **in)
+{
+	int i;
+
+	i = 1;
+	while (i < 8)
+		if (atoi(in[i++]) <= 0)
+		{
+			input_error(--i);
+			return (0);
+		}
+	return (1);
+}
 
 int	check_scheduler(char *scheduler)
 {
@@ -36,19 +74,19 @@ int	validate_input(char **in)
 		while(in[i[1]][i[0]] && i[1] < 8)
 		{
 			if (!(in[i[1]][i[0]] >= '0' && in[i[1]][i[0]] <= '9'))
+			{
+				input_error(i[1]);
 				return (0);
+			}
 			i[0]++;
 		}
 		i[1]++;
 		i[0] = 0;
 	}
-	i[1] = 1;
-	while (i[1] < 8)
-	{
-		if (atoi(in[i[1]]) <= 0)
-			return (0);
-		i[1]++;
-	}
+	if (!check_inputs(in))
+		return (0);
+	if (!is_possible(in))
+		return (0);
 	return (1);
 }
 
