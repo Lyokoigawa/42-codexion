@@ -19,12 +19,14 @@ void	end_simulation(t_simulation *sim)
 	i = 0;
 	pthread_mutex_lock(&sim->state_mutex);
 	sim->running = 0;
+	pthread_mutex_unlock(&sim->state_mutex);
 	while (i < sim->input->coders)
 	{
+		pthread_mutex_lock(&sim->coders[i].mutex);
 		pthread_cond_broadcast(&sim->coders[i].cond);
+		pthread_mutex_unlock(&sim->coders[i].mutex);
 		i++;
 	}
-	pthread_mutex_unlock(&sim->state_mutex);
 }
 
 int	simulation_running(t_simulation *sim)
@@ -60,12 +62,17 @@ int	burned_out(t_simulation *sim)
 {
 	int		i;
 	long	deadline;
+	//long	time_now;
 
 	i = 0;
 	while (i < sim->input->coders)
 	{
 		pthread_mutex_lock(&sim->coders[i].mutex);
+		//time_now = get_current_time() - sim->coders[i].last_compile_timestamp;
 		deadline = sim->coders[i].last_compile_timestamp + sim->input->burn;
+		//printf("Time to burn: %ld ", time_now);
+		//printf("Deadline: %ld ", deadline);
+		//printf("Elapsed time: %ld\n", elapsed_time(sim->start_time));
 		pthread_mutex_unlock(&sim->coders[i].mutex);
 		if (elapsed_time(sim->start_time) > deadline)
 		{

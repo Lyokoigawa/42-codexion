@@ -28,12 +28,12 @@ void	individual_input_error(int error)
 void	feasibility_error(int error)
 {
 	if (error == 1)
-		printf("ERROR: time_to_compile + time_to_debug +%s",
+		printf("WARNING: time_to_compile + time_to_debug +%s",
 			" time_to_refactor exceeds burnout_time.\n");
 	else if (error == 2)
-		printf("ERROR: time_to_compile + cooldown_time %s",
+		printf("WARNING: time_to_compile + cooldown_time %s",
 			"exceeds burnout_time.\n");
-	printf("Simulation is impossible. Exiting program...\n");
+	printf("Simulation will be impossible.\n");
 }
 
 void	input_error(int i)

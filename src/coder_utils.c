@@ -41,3 +41,15 @@ void	unlock_dongles(t_coder *coder)
 		pthread_mutex_unlock(&coder->r_dong->mutex);
 	pthread_mutex_unlock(&coder->l_dong->mutex);
 }
+
+void	coder_sleep(t_coder *coder, long time_to_wait)
+{
+	while (simulation_running(coder->sim))
+	{
+		if (get_current_time() - coder->sim->start_time >= coder->sim->input->burn)
+			return ;
+		if (get_current_time() - coder->sim->start_time >= time_to_wait)
+			return ;
+		usleep(1000);
+	}
+}

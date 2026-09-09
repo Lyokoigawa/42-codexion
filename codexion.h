@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lyokoiga <lyokoiga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 14:22:00 by lyokoiga          #+#    #+#             */
-/*   Updated: 2026/08/18 13:53:28 by marvin           ###   ########.fr       */
+/*   Updated: 2026/09/09 14:20:41 by lyokoiga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,3 +144,4 @@ int				ft_usleep(long miliseconds, t_simulation *monitor);
 void			ft_sleep_ms(long ms);
 long			elapsed_time(long start);
 void			get_deadline(struct timespec *ts, long wait_ms);
+void			coder_sleep(t_coder *coder, long time_to_wait);

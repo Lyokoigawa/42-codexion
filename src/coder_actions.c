@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   coder_actions.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lyokoiga <lyokoiga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 14:09:25 by username          #+#    #+#             */
-/*   Updated: 2026/08/18 13:37:59 by marvin           ###   ########.fr       */
+/*   Updated: 2026/09/09 14:21:41 by lyokoiga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	codex_debug(t_coder *coder)
 	if (!simulation_running(coder->sim))
 		return (0);
 	print_status(coder, "is debugging");
-	usleep(coder->sim->input->debug * 1000);
+	coder_sleep(coder, coder->sim->input->debug);
 	return (1);
 }
 
@@ -73,7 +73,7 @@ int	codex_refac(t_coder *coder)
 	if (!simulation_running(coder->sim))
 		return (0);
 	print_status(coder, "is refactoring");
-	usleep(coder->sim->input->refactor * 1000);
+	coder_sleep(coder, coder->sim->input->refactor);
 	pthread_mutex_lock(&coder->mutex);
 	coder->total_compiles += 1;
 	pthread_mutex_unlock(&coder->mutex);

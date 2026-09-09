@@ -31,9 +31,9 @@ void	restore_queue(t_simulation *sim)
 {
 	while (sim->scheduler.queue_size > 0)
 	{
-		heap_push(sim, sim->scheduler.queue[sim->scheduler.queue_size - 1]);
-		sim->scheduler.queue[sim->scheduler.queue_size] = NULL;
 		sim->scheduler.queue_size--;
+		heap_push(sim, sim->scheduler.queue[sim->scheduler.queue_size]);
+		sim->scheduler.queue[sim->scheduler.queue_size] = NULL;
 	}
 }
 

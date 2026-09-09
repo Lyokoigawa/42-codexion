@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   threads.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lyokoiga <lyokoiga@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/12 13:44:58 by username          #+#    #+#             */
-/*   Updated: 2026/08/18 14:05:11 by marvin           ###   ########.fr       */
+/*   Updated: 2026/09/09 13:53:31 by lyokoiga         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void	*start_thread(void *arg)
 	{
 		coder_request(data);
 		pthread_mutex_lock(&data->mutex);
-		if (!data->can_compile && data->sim->running)
+		if (!data->can_compile && simulation_running(data->sim))
 			pthread_cond_wait(&data->cond, &data->mutex);
 		data->can_compile = 0;
 		pthread_mutex_unlock(&data->mutex);
