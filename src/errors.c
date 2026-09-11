@@ -15,14 +15,14 @@
 void	individual_input_error(int error)
 {
 	if (error == 1)
-		printf("ERROR: time_to_compile exceeds burnout_time\n");
+		printf("WARNING: time_to_compile exceeds burnout_time\n");
 	else if (error == 2)
-		printf("ERROR: time_to_debug exceeds burnout_time\n");
+		printf("WARNING: time_to_debug exceeds burnout_time\n");
 	else if (error == 3)
-		printf("ERROR: time_to_refactor exceeds burnout_time\n");
+		printf("WARNING: time_to_refactor exceeds burnout_time\n");
 	else if (error == 4)
-		printf("ERROR: cooldown_time exceeds burnout_time\n");
-	printf("Simulation is impossible. Exiting program...\n");
+		printf("WARNING: cooldown_time exceeds burnout_time\n");
+	printf("Simulation will be impossible.\n");
 }
 
 void	feasibility_error(int error)

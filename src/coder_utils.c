@@ -44,11 +44,16 @@ void	unlock_dongles(t_coder *coder)
 
 void	coder_sleep(t_coder *coder, long time_to_wait)
 {
+	long	deadline;
+	long	task_time;
+
+	deadline = (coder->last_compile_timestamp + coder->sim->input->burn);
+	task_time = (elapsed_time(coder->sim->start_time) + time_to_wait);
 	while (simulation_running(coder->sim))
 	{
-		if (get_current_time() - coder->sim->start_time >= coder->sim->input->burn)
+		if (elapsed_time(coder->sim->start_time) >= deadline)
 			return ;
-		if (get_current_time() - coder->sim->start_time >= time_to_wait)
+		if (elapsed_time(coder->sim->start_time )>= task_time)
 			return ;
 		usleep(1000);
 	}

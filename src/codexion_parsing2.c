@@ -12,7 +12,7 @@
 
 #include "codexion.h"
 
-int	individual_input_check(int *in)
+void	individual_input_check(int *in)
 {
 	int	i;
 
@@ -22,8 +22,8 @@ int	individual_input_check(int *in)
 		if (in[i++] >= in[0])
 		{
 			individual_input_error(--i);
-			return (0);
+			return ;
 		}
 	}
-	return (1);
+	return ;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   coder_actions.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lyokoiga <lyokoiga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/29 14:09:25 by username          #+#    #+#             */
-/*   Updated: 2026/09/09 14:21:41 by lyokoiga         ###   ########.fr       */
+/*   Updated: 2026/09/11 13:00:41 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ void	coder_request(t_coder *coder)
 
 int	codex_comp(t_coder *coder)
 {
-	lock_dongles(coder);
 	print_status(coder, "has picked up a dongle");
 	print_status(coder, "has picked up a dongle");
 	if (simulation_running(coder->sim))
 	{
 		print_status(coder, "is compiling");
 		update_last_compile(coder);
-		usleep(coder->sim->input->compile * 1000);
+		coder_sleep(coder, coder->sim->input->compile);
+		lock_dongles(coder);
 		coder->l_dong->in_use = 0;
 		coder->r_dong->in_use = 0;
 		coder->l_dong->cooldown_start = elapsed_time(coder->sim->start_time);

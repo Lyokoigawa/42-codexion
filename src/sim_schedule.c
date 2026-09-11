@@ -46,11 +46,11 @@ void	check_request(t_simulation *sim)
 	struct timespec	ts;
 
 	pthread_mutex_lock(&sim->scheduler.mutex);
-	while (sim->scheduler.heap->size == 0 && simulation_running(sim))
+	if (sim->scheduler.heap->size == 0 && simulation_running(sim))
 	{
 		get_deadline(&ts, 5);
 		pthread_cond_timedwait(&sim->scheduler.cond,
-			&sim->scheduler.mutex, &ts);
+				&sim->scheduler.mutex, &ts);
 	}
 	if (!simulation_running(sim))
 	{

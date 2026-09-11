@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion_parsing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lyokoiga <lyokoiga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 10:14:59 by username          #+#    #+#             */
-/*   Updated: 2026/09/09 14:03:05 by lyokoiga         ###   ########.fr       */
+/*   Updated: 2026/09/11 13:17:18 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ int	is_possible(char **in)
 	nums[2] = atoi(in[4]);
 	nums[3] = atoi(in[5]);
 	nums[4] = atoi(in[7]);
-	if (!individual_input_check(nums))
-		return (0);
+	individual_input_check(nums);
 	if ((nums[1] + nums[2] + nums[3]) >= nums[0])
 	{
 		feasibility_error(1);

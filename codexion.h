@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   codexion.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lyokoiga <lyokoiga@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/02 14:22:00 by lyokoiga          #+#    #+#             */
-/*   Updated: 2026/09/09 14:20:41 by lyokoiga         ###   ########.fr       */
+/*   Updated: 2026/09/11 13:08:33 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ void			unlock_dongles(t_coder *coder);
 void			input_error(int i);
 void			feasibility_error(int error);
 void			destroy_simulation(t_simulation *sim);
-int				individual_input_check(int *in);
+void			individual_input_check(int *in);
 void			individual_input_error(int error);
 t_simulation	*spawn_world(t_input *in);
 void			run_world(t_simulation *sim);
